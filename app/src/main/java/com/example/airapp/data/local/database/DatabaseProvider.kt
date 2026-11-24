@@ -13,6 +13,7 @@ object DatabaseProvider {
                 "app_database.db"
             )
                 .setDriver(AndroidSQLiteDriver())
+                .addMigrations(MIGRATION_1_2)
                 .build()
             INSTANCE = instance
             instance
