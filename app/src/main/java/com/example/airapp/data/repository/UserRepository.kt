@@ -3,6 +3,8 @@ package com.example.airapp.data.repository
 import com.example.airapp.data.local.dao.UserDao
 import com.example.airapp.data.local.entity.UserEntity
 import com.example.airapp.security.PasswordHasher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class UserRepository (private val userDao: UserDao) {
     suspend fun insertUser(user: UserEntity) {
@@ -22,10 +24,12 @@ class UserRepository (private val userDao: UserDao) {
             ?: return null
 
         val passwordIsValid =
-            PasswordHasher.verify(
-                password,
-                user.passwordHash
-            )
+            withContext(Dispatchers.Default) {
+                PasswordHasher.verify(
+                    password,
+                    user.passwordHash
+                )
+            }
 
         return if (passwordIsValid) {
             user

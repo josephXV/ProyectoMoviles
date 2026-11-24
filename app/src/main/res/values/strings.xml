@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">AirApp</string>
 
-    <string name="login_subtitle"> Ingrese sus credenciales</string>
+    <string name="login_subtitle">Ingrese sus credenciales</string>
     <string name="login_username_label">Usuario</string>
     <string name="login_password_label">Contraseña</string>
     <string name="login_button">Iniciar sesión</string>

@@ -191,6 +191,7 @@ fun LoginScreen(
 
                 Button(
                     onClick = onLoginClick,
+                    enabled = !uiState.isLoading,
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
                 ) {

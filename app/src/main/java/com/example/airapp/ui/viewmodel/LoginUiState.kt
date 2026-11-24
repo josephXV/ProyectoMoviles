@@ -5,7 +5,8 @@ data class LoginUiState (
     val password: String = "",
     val validationError: LoginValidationError? = null,
     val authenticationError: LoginAuthenticationError? = null,
-    val isAuthenticated: Boolean = false
+    val isAuthenticated: Boolean = false,
+    val isLoading: Boolean = false
 )
 
 enum class LoginValidationError {

@@ -1,15 +1,15 @@
 package com.example.airapp.ui.theme
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 
 private val DarkColorScheme = darkColorScheme(
-    primary = HvacBlue,
+    primary = HvacDarkPrimary,
     secondary = HvacCyan,
-    background = HvacBackground,
+    background = HvacDarkBackground,
     surface = HvacDarkSurface,
     onPrimary = HvacTextDark,
     onBackground = HvacDarkText,
@@ -32,11 +32,7 @@ private val LightColorScheme = lightColorScheme(
 fun AirAppTheme(
     content: @Composable () -> Unit
 ) {
-    val colorScheme = lightColorScheme(
-        primary = Color(0xFF1976D2),
-        background = Color(0xFFF7FAFC),
-        surface = Color(0xFFF7FAFC)
-    )
+    val colorScheme = if (isSystemInDarkTheme()) DarkColorScheme else LightColorScheme
 
     MaterialTheme(
         colorScheme = colorScheme,

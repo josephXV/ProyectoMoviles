@@ -8,7 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
-class airAppApplication: Application() {
+class AirAppApplication: Application() {
     val appContainer: AppContainer by lazy {
         AppContainer(this)
     }

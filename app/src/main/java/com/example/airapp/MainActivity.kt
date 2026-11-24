@@ -15,7 +15,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val appContainer = (application as airAppApplication).appContainer
+        val appContainer = (application as AirAppApplication).appContainer
         setContent {
             AirAppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->

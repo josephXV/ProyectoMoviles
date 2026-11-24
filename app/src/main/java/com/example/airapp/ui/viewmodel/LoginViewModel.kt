@@ -7,9 +7,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import com.example.airapp.data.repository.UserRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 
@@ -31,9 +29,11 @@ class LoginViewModel (private val userRepository: UserRepository) : ViewModel() 
     fun validateInput() {
 
         val currentState = _uiState.value
+        if (currentState.isLoading) return
+        val email = currentState.email.trim()
 
         val validationError = when {
-            currentState.email.isBlank() ->
+            email.isBlank() ->
                 LoginValidationError.EMAIL_REQUIRED
 
             currentState.password.isBlank() ->
@@ -53,21 +53,22 @@ class LoginViewModel (private val userRepository: UserRepository) : ViewModel() 
             return
         }
 
+        _uiState.update { it.copy(isLoading = true) }
+
         viewModelScope.launch {
 
-            val user = withContext(Dispatchers.Default) {
-                userRepository.authenticate(
-                    currentState.email,
-                    currentState.password
-                )
-            }
+            val user = userRepository.authenticate(
+                email,
+                currentState.password
+            )
 
             if (user != null) {
                 _uiState.update {
                     it.copy(
                         validationError = null,
                         authenticationError = null,
-                        isAuthenticated = true
+                        isAuthenticated = true,
+                        isLoading = false
                     )
                 }
             } else {
@@ -76,7 +77,8 @@ class LoginViewModel (private val userRepository: UserRepository) : ViewModel() 
                         validationError = null,
                         authenticationError =
                             LoginAuthenticationError.INVALID_CREDENTIALS,
-                        isAuthenticated = false
+                        isAuthenticated = false,
+                        isLoading = false
                     )
                 }
             }
