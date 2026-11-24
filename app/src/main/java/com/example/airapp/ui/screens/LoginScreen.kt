@@ -17,6 +17,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import com.example.airapp.data.local.entity.UserEntity
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,10 +44,14 @@ import com.example.airapp.ui.theme.AirAppTheme
 @Composable
 fun LoginRoute(
     modifier: Modifier = Modifier,
-    userRepository: UserRepository
+    userRepository: UserRepository,
+    onLoginSuccess: (UserEntity) -> Unit = {}
 ){
     val viewModel: LoginViewModel = viewModel(factory = LoginViewModelFactory(userRepository))
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    LaunchedEffect(uiState.user) {
+        uiState.user?.let(onLoginSuccess)
+    }
     LoginScreen(
         modifier = modifier,
         uiState = uiState,

@@ -16,6 +16,12 @@ interface ServiceTicketHeaderDao {
     @Update
     suspend fun update(ticket: ServiceTicketHeaderEntity)
 
+    @Query("SELECT * FROM service_ticket_headers ORDER BY createdAt DESC")
+    suspend fun getAll(): List<ServiceTicketHeaderEntity>
+
+    @Query("UPDATE service_ticket_headers SET status = :status WHERE id = :ticketId")
+    suspend fun updateStatus(ticketId: Long, status: TicketStatus)
+
     @Query("SELECT * FROM service_ticket_headers WHERE id = :id LIMIT 1")
     suspend fun findById(id: Long): ServiceTicketHeaderEntity?
 

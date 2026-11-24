@@ -10,4 +10,8 @@
     <string name="login_password_required">Ingrese la contraseña</string>
     <string name="login_success">Datos ingresados correctamente</string>
     <string name="login_invalid_credentials">Usuario o contraseña incorrectos</string>
+    <string name="home_welcome">Bienvenido, %1$s</string>
+    <string name="role_admin">Administrador</string>
+    <string name="role_technician">Técnico</string>
+    <string name="home_logout">Cerrar sesión</string>
 </resources>

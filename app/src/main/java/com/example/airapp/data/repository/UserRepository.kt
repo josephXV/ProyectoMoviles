@@ -11,6 +11,12 @@ class UserRepository (private val userDao: UserDao) {
         userDao.insert(user)
     }
 
+    suspend fun update(user: UserEntity) = userDao.update(user)
+    suspend fun getAll(): List<UserEntity> = userDao.getAll()
+    suspend fun findById(id: Long): UserEntity? = userDao.findById(id)
+    suspend fun deactivate(userId: Long) = userDao.deactivate(userId)
+    suspend fun reactivate(userId: Long) = userDao.reactivate(userId)
+
     suspend fun findByEmail (email: String): UserEntity? {
         return userDao.findByEmail(email)
     }
@@ -22,6 +28,8 @@ class UserRepository (private val userDao: UserDao) {
 
         val user = userDao.findByEmail(email)
             ?: return null
+
+        if (!user.isActive) return null
 
         val passwordIsValid =
             withContext(Dispatchers.Default) {

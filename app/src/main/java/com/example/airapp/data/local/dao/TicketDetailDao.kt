@@ -22,6 +22,9 @@ interface TicketDetailDao {
     @Delete
     suspend fun delete(detail: TicketDetailEntity)
 
+    @Query("SELECT COALESCE(SUM(quantity * unitPrice), 0.0) FROM ticket_details WHERE ticketId = :ticketId")
+    suspend fun getTotal(ticketId: Long): Double
+
     @Query("SELECT * FROM ticket_details WHERE ticketId = :ticketId ORDER BY id")
     suspend fun getByTicket(ticketId: Long): List<TicketDetailEntity>
 }

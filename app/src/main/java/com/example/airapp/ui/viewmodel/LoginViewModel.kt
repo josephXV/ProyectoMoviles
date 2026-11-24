@@ -68,6 +68,7 @@ class LoginViewModel (private val userRepository: UserRepository) : ViewModel() 
                         validationError = null,
                         authenticationError = null,
                         isAuthenticated = true,
+                        user = user,
                         isLoading = false
                     )
                 }

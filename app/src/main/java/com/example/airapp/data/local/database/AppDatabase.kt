@@ -19,7 +19,8 @@ import com.example.airapp.data.local.entity.UserEntity
         ServiceTicketHeaderEntity::class,
         TicketDetailEntity::class
     ],
-    version = 2
+    version = 2,
+    exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
