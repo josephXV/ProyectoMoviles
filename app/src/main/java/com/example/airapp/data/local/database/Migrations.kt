@@ -61,3 +61,9 @@ val MIGRATION_1_2 = Migration(1, 2) { connection ->
         "CREATE INDEX IF NOT EXISTS `index_ticket_details_ticketId` ON `ticket_details` (`ticketId`)"
     )
 }
+
+/** Renombra los estados de tiquete: ABIERTO -> NUEVO, CERRADO -> FINALIZADO. */
+val MIGRATION_2_3 = Migration(2, 3) { connection ->
+    connection.execSQL("UPDATE `service_ticket_headers` SET `status` = 'NUEVO' WHERE `status` = 'ABIERTO'")
+    connection.execSQL("UPDATE `service_ticket_headers` SET `status` = 'FINALIZADO' WHERE `status` = 'CERRADO'")
+}

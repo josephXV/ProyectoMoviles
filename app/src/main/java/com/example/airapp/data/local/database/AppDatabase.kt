@@ -19,7 +19,7 @@ import com.example.airapp.data.local.entity.UserEntity
         ServiceTicketHeaderEntity::class,
         TicketDetailEntity::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {

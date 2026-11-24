@@ -6,9 +6,10 @@ import androidx.room3.Index
 import androidx.room3.PrimaryKey
 
 enum class TicketStatus {
-    ABIERTO,
+    NUEVO,
+    ASIGNADO,
     EN_PROCESO,
-    CERRADO
+    FINALIZADO
 }
 
 @Entity(
@@ -38,6 +39,6 @@ data class ServiceTicketHeaderEntity(
     val customerId: Long,
     val technicianId: Long,
     val createdAt: Long,
-    val status: TicketStatus = TicketStatus.ABIERTO,
+    val status: TicketStatus = TicketStatus.NUEVO,
     val description: String
 )
