@@ -6,23 +6,24 @@ import androidx.room3.Index
 import androidx.room3.PrimaryKey
 
 @Entity(
-    tableName = "ticket_details",
+    tableName = "service_ticket_details",
     foreignKeys = [
         ForeignKey(
             entity = ServiceTicketHeaderEntity::class,
             parentColumns = ["id"],
-            childColumns = ["ticketId"]
+            childColumns = ["ticketHeaderId"],
+            onDelete = ForeignKey.CASCADE
         )
     ],
     indices = [
-        Index(value = ["ticketId"])
+        Index(value = ["ticketHeaderId"])
     ]
 )
-data class TicketDetailEntity(
+data class ServiceTicketDetailEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    val ticketId: Long,
+    val ticketHeaderId: Long,
+    val quantity: Int,
     val description: String,
-    val quantity: Int = 1,
-    val unitPrice: Double = 0.0
+    val unitPrice: Long
 )

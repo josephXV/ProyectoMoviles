@@ -5,7 +5,7 @@ import com.example.airapp.data.local.entity.CustomerEntity
 
 class CustomerRepository(private val customerDao: CustomerDao) {
 
-    suspend fun insert(customer: CustomerEntity): Long {
+    suspend fun insertCustomer(customer: CustomerEntity): Long {
         return customerDao.insert(customer)
     }
 
@@ -13,7 +13,7 @@ class CustomerRepository(private val customerDao: CustomerDao) {
         customerDao.update(customer)
     }
 
-    suspend fun getAll(): List<CustomerEntity> {
+    suspend fun getAllCustomers(): List<CustomerEntity> {
         return customerDao.getAll()
     }
 

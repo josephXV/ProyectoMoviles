@@ -22,8 +22,9 @@ class AirAppApplication: Application() {
         super.onCreate()
 
         applicationScope.launch {
-            DatabaseSeeder.seedInitialUser(
-                appContainer.userRepository
+            DatabaseSeeder.seedInitialData(
+                appContainer.userRepository,
+                appContainer.customerRepository
             )
         }
     }

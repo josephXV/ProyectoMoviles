@@ -107,3 +107,33 @@ val MIGRATION_3_4 = Migration(3, 4) { connection ->
         "CREATE INDEX IF NOT EXISTS `index_service_ticket_headers_assignedTechnicianId` ON `service_ticket_headers` (`assignedTechnicianId`)"
     )
 }
+
+/**
+ * Renombra ticket_details a service_ticket_details: ticketId pasa a ticketHeaderId,
+ * unitPrice pasa de REAL a INTEGER (Long) y la clave foránea usa ON DELETE CASCADE.
+ */
+val MIGRATION_4_5 = Migration(4, 5) { connection ->
+    connection.execSQL(
+        """
+        CREATE TABLE IF NOT EXISTS `service_ticket_details` (
+            `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            `ticketHeaderId` INTEGER NOT NULL,
+            `quantity` INTEGER NOT NULL,
+            `description` TEXT NOT NULL,
+            `unitPrice` INTEGER NOT NULL,
+            FOREIGN KEY(`ticketHeaderId`) REFERENCES `service_ticket_headers`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE
+        )
+        """.trimIndent()
+    )
+    connection.execSQL(
+        """
+        INSERT INTO `service_ticket_details` (`id`, `ticketHeaderId`, `quantity`, `description`, `unitPrice`)
+        SELECT `id`, `ticketId`, `quantity`, `description`, CAST(ROUND(`unitPrice`) AS INTEGER)
+        FROM `ticket_details`
+        """.trimIndent()
+    )
+    connection.execSQL("DROP TABLE `ticket_details`")
+    connection.execSQL(
+        "CREATE INDEX IF NOT EXISTS `index_service_ticket_details_ticketHeaderId` ON `service_ticket_details` (`ticketHeaderId`)"
+    )
+}

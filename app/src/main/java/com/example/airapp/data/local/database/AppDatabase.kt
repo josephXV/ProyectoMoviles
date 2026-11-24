@@ -4,11 +4,11 @@ import androidx.room3.Database
 import androidx.room3.RoomDatabase
 import com.example.airapp.data.local.dao.CustomerDao
 import com.example.airapp.data.local.dao.ServiceTicketHeaderDao
-import com.example.airapp.data.local.dao.TicketDetailDao
+import com.example.airapp.data.local.dao.ServiceTicketDetailDao
 import com.example.airapp.data.local.dao.UserDao
 import com.example.airapp.data.local.entity.CustomerEntity
 import com.example.airapp.data.local.entity.ServiceTicketHeaderEntity
-import com.example.airapp.data.local.entity.TicketDetailEntity
+import com.example.airapp.data.local.entity.ServiceTicketDetailEntity
 import com.example.airapp.data.local.entity.UserEntity
 
 
@@ -17,14 +17,14 @@ import com.example.airapp.data.local.entity.UserEntity
         UserEntity::class,
         CustomerEntity::class,
         ServiceTicketHeaderEntity::class,
-        TicketDetailEntity::class
+        ServiceTicketDetailEntity::class
     ],
-    version = 4,
+    version = 5,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun customerDao(): CustomerDao
     abstract fun serviceTicketHeaderDao(): ServiceTicketHeaderDao
-    abstract fun ticketDetailDao(): TicketDetailDao
+    abstract fun serviceTicketDetailDao(): ServiceTicketDetailDao
 }
