@@ -18,27 +18,28 @@ enum class TicketStatus {
         ForeignKey(
             entity = CustomerEntity::class,
             parentColumns = ["id"],
-            childColumns = ["customerId"]
+            childColumns = ["customerId"],
+            onDelete = ForeignKey.RESTRICT
         ),
         ForeignKey(
             entity = UserEntity::class,
             parentColumns = ["id"],
-            childColumns = ["technicianId"]
+            childColumns = ["assignedTechnicianId"],
+            onDelete = ForeignKey.RESTRICT
         )
     ],
     indices = [
-        Index(value = ["ticketNumber"], unique = true),
         Index(value = ["customerId"]),
-        Index(value = ["technicianId"])
+        Index(value = ["assignedTechnicianId"])
     ]
 )
 data class ServiceTicketHeaderEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    val ticketNumber: String,
     val customerId: Long,
-    val technicianId: Long,
-    val createdAt: Long,
+    val serviceAddress: String,
+    val assignedTechnicianId: Long? = null,
+    val reportedProblem: String,
     val status: TicketStatus = TicketStatus.NUEVO,
-    val description: String
+    val createdAt: Long
 )

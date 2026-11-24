@@ -27,7 +27,6 @@ class ServiceTicketRepository(
 
     suspend fun getAll() = headerDao.getAll()
     suspend fun findById(id: Long) = headerDao.findById(id)
-    suspend fun findByTicketNumber(number: String) = headerDao.findByTicketNumber(number)
     suspend fun getByTechnician(technicianId: Long) = headerDao.getByTechnician(technicianId)
     suspend fun getByCustomer(customerId: Long) = headerDao.getByCustomer(customerId)
     suspend fun getByStatus(status: TicketStatus) = headerDao.getByStatus(status)

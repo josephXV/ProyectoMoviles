@@ -67,3 +67,43 @@ val MIGRATION_2_3 = Migration(2, 3) { connection ->
     connection.execSQL("UPDATE `service_ticket_headers` SET `status` = 'NUEVO' WHERE `status` = 'ABIERTO'")
     connection.execSQL("UPDATE `service_ticket_headers` SET `status` = 'FINALIZADO' WHERE `status` = 'CERRADO'")
 }
+
+/**
+ * Rediseña service_ticket_headers: quita ticketNumber, renombra technicianId a
+ * assignedTechnicianId (ahora opcional), description a reportedProblem, agrega
+ * serviceAddress (tomada de la dirección del cliente) y usa ON DELETE RESTRICT.
+ */
+val MIGRATION_3_4 = Migration(3, 4) { connection ->
+    connection.execSQL(
+        """
+        CREATE TABLE IF NOT EXISTS `service_ticket_headers_new` (
+            `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            `customerId` INTEGER NOT NULL,
+            `serviceAddress` TEXT NOT NULL,
+            `assignedTechnicianId` INTEGER,
+            `reportedProblem` TEXT NOT NULL,
+            `status` TEXT NOT NULL,
+            `createdAt` INTEGER NOT NULL,
+            FOREIGN KEY(`customerId`) REFERENCES `customers`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT,
+            FOREIGN KEY(`assignedTechnicianId`) REFERENCES `users`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT
+        )
+        """.trimIndent()
+    )
+    connection.execSQL(
+        """
+        INSERT INTO `service_ticket_headers_new`
+            (`id`, `customerId`, `serviceAddress`, `assignedTechnicianId`, `reportedProblem`, `status`, `createdAt`)
+        SELECT h.`id`, h.`customerId`, c.`address`, h.`technicianId`, h.`description`, h.`status`, h.`createdAt`
+        FROM `service_ticket_headers` h
+        JOIN `customers` c ON c.`id` = h.`customerId`
+        """.trimIndent()
+    )
+    connection.execSQL("DROP TABLE `service_ticket_headers`")
+    connection.execSQL("ALTER TABLE `service_ticket_headers_new` RENAME TO `service_ticket_headers`")
+    connection.execSQL(
+        "CREATE INDEX IF NOT EXISTS `index_service_ticket_headers_customerId` ON `service_ticket_headers` (`customerId`)"
+    )
+    connection.execSQL(
+        "CREATE INDEX IF NOT EXISTS `index_service_ticket_headers_assignedTechnicianId` ON `service_ticket_headers` (`assignedTechnicianId`)"
+    )
+}

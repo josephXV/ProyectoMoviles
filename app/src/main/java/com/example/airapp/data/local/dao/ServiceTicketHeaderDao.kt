@@ -25,10 +25,7 @@ interface ServiceTicketHeaderDao {
     @Query("SELECT * FROM service_ticket_headers WHERE id = :id LIMIT 1")
     suspend fun findById(id: Long): ServiceTicketHeaderEntity?
 
-    @Query("SELECT * FROM service_ticket_headers WHERE ticketNumber = :ticketNumber LIMIT 1")
-    suspend fun findByTicketNumber(ticketNumber: String): ServiceTicketHeaderEntity?
-
-    @Query("SELECT * FROM service_ticket_headers WHERE technicianId = :technicianId ORDER BY createdAt DESC")
+    @Query("SELECT * FROM service_ticket_headers WHERE assignedTechnicianId = :technicianId ORDER BY createdAt DESC")
     suspend fun getByTechnician(technicianId: Long): List<ServiceTicketHeaderEntity>
 
     @Query("SELECT * FROM service_ticket_headers WHERE customerId = :customerId ORDER BY createdAt DESC")
