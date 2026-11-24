@@ -1,0 +1,21 @@
+package com.example.airapp.data.local.database
+
+import android.content.Context
+import androidx.room3.Room
+import androidx.sqlite.driver.AndroidSQLiteDriver
+
+object DatabaseProvider {
+    @Volatile private var INSTANCE: AppDatabase? = null
+    fun getDatabase(context: Context): AppDatabase {
+        return INSTANCE ?: synchronized(this) {
+            val instance = Room.databaseBuilder<AppDatabase>(
+                context.applicationContext,
+                "app_database.db"
+            )
+                .setDriver(AndroidSQLiteDriver())
+                .build()
+            INSTANCE = instance
+            instance
+        }
+    }
+}
